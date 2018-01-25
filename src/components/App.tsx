@@ -9,6 +9,7 @@ import Test from './Test';
 export interface AppProps {
   logInDetails: LogInDetails;
   user: LocalUser;
+  
   fetchTags(): any;
   fetchTodos(): any;
   login(): any;
@@ -21,22 +22,20 @@ export interface AppProps {
   setLoginPassword(password: string): any;
 }
 
-const abc = (): void => {
-  console.log('hello');
+const abc = (props: AppProps): void => {
+  const A = props.setLoginEmail('me@me.com');
+  console.log(A);
 };
 
 const App: any = (props: AppProps) => {
 
-  console.log(props.logInDetails);
-  console.log(props.user.authenticated);
-  props.user.authenticated = true;
-  console.log(props.user.authenticated);
+  console.log('app props');
   // props.setLoginPassword('me');
   // props.login();
   // props.fetchTags();
   // props.fetchTodos();
 
-  abc();
+  abc(props);
 
   return (
     <div className="App">
