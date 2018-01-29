@@ -22,7 +22,7 @@ export const initialUser = {
 export const initialTodoList = {
   showPopUp: false,
   title: 'Your Todos:',
-  todoProps: [],
+  todos: [],
   popUpEditTitle: '',
   todoToEdit: -1,
   searchValue: {

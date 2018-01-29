@@ -1,34 +1,61 @@
 import * as React from 'react';
-import Todo from './TodoItem';
+import TodoItemContainer from '../containers/TodoItemContainer';
+import AddTodoForm from './forms/AddTodo';
+import SearchTodoForm from './forms/SearchTodo';
 import TodoList from '../domains/TodoList';
+import PopupEdit from './forms/PopUpEdit';
+import TodoListProps from '../domains/TodoListProps';
 
 // import SERVICES from '../services';
 
-export interface TodoListProps {
-  todoList: TodoList;
-  userId: number;
-  handleDelete(): any;
-  handleEdit(): any;
-}
-
-const TodoList = (props: TodoListProps) => {
+const TodoList: React.SFC<TodoListProps> = (props: TodoListProps) => {
   return (
     <div>
+      {props.showPopUp ? (
+        <PopupEdit
+          title={props.popUpEditTitle}
+          closePopUp={props.closePopUp}
+          changeTitle={props.setPopUpEditTitle}
+        />
+      ) : null}
       <div className="container">
+        <div className="add-button-container">
+          <button onClick={props.toggleAddForm} className="fa fa-plus" />
+        </div>
+        <div className="add-wrapper">
+          <AddTodoForm
+            height={props.addFormHeight}
+            addTitle={props.todoToAdd.title}
+            activeTagIds={props.todoToAdd.tagIds}
+            availableTags={props.availableTags}
+            expiryDate={props.todoToAdd.expiresAt}
+            handleAddSubmit={props.handleAdd}
+            setTitleToAdd={props.setTitleToAdd}
+            setExpDateToAdd={props.setExpDateToAdd}
+            setTagIdsToAdd={props.setTagIdsToAdd}
+            setTagNamesToAdd={props.setTagNamesToAdd}
+          />
+        </div>
         <div className="todos-container">
-          <h2 className="todo-header">{props.todoList.title}</h2>
+          <h2 className="todo-header">{props.title}</h2>
           <ul className="todo-list">
-            {props.todoList.todoProps.map((item, i) => (
-              <Todo
-                key={item.id}
+            {props.todos.map((item, i) => (
+              <TodoItemContainer
+                key={String(item.id)}
                 id={item.id}
                 title={item.title}
                 tags={item.tags}
-                handleDelete={props.handleDelete}
-                handleEdit={props.handleEdit}
               />
             ))}
           </ul>
+        </div>
+        <div className="search-wrapper">
+          <SearchTodoForm
+            handleSearchClick={props.handleSearch}
+            handleKeyChange={props.setSearchKeywords}
+            handleTagClick={props.setSearchTags}
+            availableTags={props.availableTags}
+          />
         </div>
       </div>
     </div>

@@ -1,70 +1,101 @@
 import SERVICES from '../services/index';
 import FetchedUsrDetails from '../domains/FetchedUsrDetails';
-import { getAction } from '../domains/ActionCreators';
+import { getAction, getActionWithPayload } from '../domains/ActionCreators';
 import TypeKeys from '../domains/TypeKeys';
 import RootState from '../domains/RootState';
 import LogInDetails from '../domains/LogInDetails';
-import RegisterDetails from '../domains/RegisterDetails';
 import { Dispatch } from 'redux';
 import Tokens from '../domains/Tokens';
-// import { ReceiveTokensAndUserDetails } from '../domains/ActionTypes';
+import { AxiosResponse } from 'axios';
+import LogInResponseData from '../domains/LogInResponseData';
+import {
+  LoginReturnType,
+  LogoutReturnType,
+  SetAuthentication,
+  SetLoginEmail,
+  SetLoginPassword,
+  ReceiveTokensAndUserDetails,
+  RemoveTokensAndUserDetails,
+  ResetStore
+} from '../domains/ActionTypes';
 
-export function receiveTokensAndUserDetails(tokens: Tokens, userDetails: FetchedUsrDetails) {
-  return getAction(TypeKeys.RECEIVE_TOKENS_AND_USERDETAILS, { userDetails });
+// login
+export function login(userInfo: LogInDetails): LoginReturnType {
+  return (dispatch: Dispatch<RootState>) => {
+    return SERVICES.login(userInfo)
+      .then((response: AxiosResponse<LogInResponseData>) => {
+        if (response) {
+          let { tokens } = response.data;
+          let userDetails: FetchedUsrDetails = response.data.userInfo;
+          SERVICES.setTokenInHeader(tokens.accessToken);
+          dispatch(receiveTokensAndUserDetails(tokens, userDetails));
+          dispatch(setAuthentication(true));
+          return { tokens, userDetails };
+        }
+        return null;
+      });
+  };
 }
 
-export function removeTokensAndUserDetails() {
+export function forcedLogout() {
+  return (dispatch: Dispatch<RootState>) => {
+    dispatch(setAuthentication(false));
+    dispatch(removeTokensAndUserDetails());
+    localStorage.setItem(
+      'currentUser',
+      JSON.stringify({
+        userEmail: '',
+        authenticated: false
+      })
+    );
+    dispatch(resetStore());
+  };
+}
+
+export function logout(): LogoutReturnType {
+  return (dispatch: Dispatch<RootState>) => {
+
+    return SERVICES.logout()
+      .then((data) => {
+        if (data) {
+          dispatch(setAuthentication(false));
+          dispatch(removeTokensAndUserDetails());
+          localStorage.setItem(
+            'currentUser',
+            JSON.stringify({
+              userEmail: '',
+              authenticated: false
+            })
+          );
+          dispatch(resetStore());
+        } else {
+          console.log('can\'t seem to logout');
+        }
+      });
+  };
+}
+
+export function receiveTokensAndUserDetails(tokens: Tokens, userDetails: FetchedUsrDetails)
+  : ReceiveTokensAndUserDetails {
+  return getActionWithPayload(TypeKeys.RECEIVE_TOKENS_AND_USERDETAILS, { tokens, userDetails });
+}
+
+export function removeTokensAndUserDetails(): RemoveTokensAndUserDetails {
   return getAction(TypeKeys.REMOVE_TOKENS_AND_USERDETAILS);
 }
 
-export function setAuthentication(authenticated: boolean = false) {
-  return getAction(TypeKeys.SET_AUTHENTICATION, { authenticated });
+export function resetStore(): ResetStore {
+  return getAction(TypeKeys.RESET_STORE);
 }
 
-export function setLoginEmail(email: string) {
-  return getAction(TypeKeys.SET_LOGIN_EMAIL, { email });
+export function setAuthentication(authenticated: boolean = false): SetAuthentication {
+  return getActionWithPayload(TypeKeys.SET_AUTHENTICATION, { authenticated });
 }
 
-export function setLoginPassword(password: string) {
-  return getAction(TypeKeys.SET_LOGIN_PASSWORD, { password });
+export function setLoginEmail(email: string): SetLoginEmail {
+  return getActionWithPayload(TypeKeys.SET_LOGIN_EMAIL, { email });
 }
 
-// login
-export function login(userInfo: LogInDetails) {
-  return (dispatch: Dispatch<RootState>) => {
-    // dispatch(requestTokens(userInfo));
-    SERVICES.login(userInfo)
-      .then(
-      (response) => {
-        if (response) {
-          let { tokens } = response.data.data;
-          let userDetails = response.data.data.userInfo;
-          SERVICES.setTokenInHeader(tokens);
-          dispatch(receiveTokensAndUserDetails(tokens, userDetails));
-          dispatch(setAuthentication(true));
-          // return { tokens, userDetails };
-        }
-        // return { tokens: {}, userDetails: {}};
-      },
-      (err) => console.log(err)
-      )
-      .catch((err) => console.log(err));
-    // It's a bad idea to use catch(acc to docs) but this prevents from app crashing because
-    // services.login throws an error.
-  };
-}
-
-// register
-export function register(newUserDetails: RegisterDetails) {
-  console.log('from register', newUserDetails);
-  return (dispatch: Dispatch<RootState>) => {
-    SERVICES.register(newUserDetails).then((response) => {
-      console.log('response from register', response);
-      // return response;
-    });
-  };
-}
-
-export function resetStore(defaultState: RootState) {
-  return getAction(TypeKeys.RESET_STORE, { defaultState });
+export function setLoginPassword(password: string): SetLoginPassword {
+  return getActionWithPayload(TypeKeys.SET_LOGIN_PASSWORD, { password });
 }

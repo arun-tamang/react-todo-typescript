@@ -1,9 +1,9 @@
 import TodoItem from './TodoItem';
-import TodoPropsItem from './TodoPropsItem';
+// import TodoPropsItem from './TodoPropsItem';
 import TodoMetaData from './TodoMetaData';
 import TagItem from './TagItem';
 import FetchedUsrDetails from './FetchedUsrDetails';
-import RootState from './RootState';
+// import RootState from './RootState';
 import Tokens from './Tokens';
 
 export interface AddTodoPayload {
@@ -20,7 +20,7 @@ export interface EditTodoPayload {
 }
 
 export interface SetTodoPropsPayload {
-  todoProps: TodoPropsItem[];
+  todos: TodoItem[];
 }
 
 export interface SetMetaDataPayload {
@@ -80,6 +80,6 @@ export interface SetLoginPasswordPayload {
   password: string;
 }
 
-export interface ResetStorePayload {
-  defaultState: RootState;
-}
+// export interface ResetStorePayload {
+//   defaultState: RootState;
+// }

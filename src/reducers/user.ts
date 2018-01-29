@@ -25,8 +25,6 @@ const user = (state: LocalUser = initialUser, action: UserActions) => {
         tokens: '',
         userDetails: ''
       };
-    // case 'RESET_STORE':
-    //   return action.payload.defaultState.user;
     default:
       return state;
   }

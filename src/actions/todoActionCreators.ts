@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import TodoPropsItem from '../domains/TodoPropsItem';
+// import TodoPropsItem from '../domains/TodoPropsItem';
 import TodoMetaData from '../domains/TodoMetaData';
 import TagItem from '../domains/TagItem';
 import SearchValue from '../domains/SearchValue';
@@ -44,11 +44,11 @@ export function editTodo(title: string, index: number): ActionTypes.EditTodo {
 
 // set todoProps
 
-export function setTodoProps(todoProps: TodoPropsItem[]): ActionTypes.SetTodoProps {
+export function setTodoProps(todos: TodoItem[]): ActionTypes.SetTodoProps {
   return {
     type: TypeKeys.SET_TODO_PROPS,
     payload: {
-      todoProps
+      todos
     }
   };
 }
@@ -98,7 +98,7 @@ export function setTodoToEdit(todoId: number): ActionTypes.SetTodoToEdit {
 }
 
 // fetch todos
-export function fetchTodos(userId: number, pageNo: number) {
+export function fetchTodos(userId: number, pageNo: number): ActionTypes.FetchTodosReturnType {
   return (dispatch: Dispatch<any>) => {
     return SERVICES.downloadTodos(userId, pageNo).then(
       (downloadedTodos: any) => {
@@ -118,7 +118,7 @@ export function fetchTodos(userId: number, pageNo: number) {
 }
 
 // search todos
-export function searchTodos(searchValue: SearchValue, userId: number) {
+export function searchTodos(searchValue: SearchValue, userId: number): ActionTypes.SearchTodosReturnType {
   return (dispatch: Dispatch<any>) => {
     return SERVICES.searchTodos(searchValue, userId).then(response => {
       if (response) {
@@ -143,7 +143,7 @@ export function setTags(tags: TagItem[]): ActionTypes.SetTags {
   };
 }
 
-export function fetchTags(userId: number) {
+export function fetchTags(userId: number): ActionTypes.FetchTagsReturnType {
   return (dispatch: Dispatch<any>) => {
     return SERVICES.fetchTags(userId).then(
       (fetchedTags: TagItem[]) => {

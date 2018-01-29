@@ -1,5 +1,5 @@
 import SearchValue from './SearchValue';
-import TodoProps from './TodoProps';
+import TodoItem from './TodoItem';
 import TagItem from './TagItem';
 import TodoMetaData from './TodoMetaData';
 import TodoToAdd from './TodoToAdd';
@@ -7,7 +7,7 @@ import TodoToAdd from './TodoToAdd';
 export default interface TodoList {
   showPopUp: boolean;
   title: string;
-  todoProps: TodoProps[];
+  todos: TodoItem[];
   popUpEditTitle: string;
   todoToEdit: number;
   searchValue: SearchValue;

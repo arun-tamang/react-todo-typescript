@@ -1,5 +1,8 @@
+import { Dispatch } from 'redux';
+import RootState from './RootState';
+import LoginActionReturn from './LoginActionReturn';
 import TypeKeys from './TypeKeys';
-import { Action, ActionWithPayload } from '../domains/ActionCreators';
+import { Action, ActionWithPayload } from './ActionCreators';
 import {
   AddTodoPayload,
   RemoveTodoPayload,
@@ -18,8 +21,7 @@ import {
   ReceiveTokensAndUserDetailsPayload,
   SetAuthenticationPayload,
   SetLoginEmailPayload,
-  SetLoginPasswordPayload,
-  ResetStorePayload
+  SetLoginPasswordPayload
 } from './payloads';
 
 export type AddTodo = ActionWithPayload<TypeKeys.ADD_TODO, AddTodoPayload>;
@@ -46,7 +48,27 @@ export type RemoveTokensAndUserDetails = Action<TypeKeys.REMOVE_TOKENS_AND_USERD
 export type SetAuthentication = ActionWithPayload<TypeKeys.SET_AUTHENTICATION, SetAuthenticationPayload>;
 export type SetLoginEmail = ActionWithPayload<TypeKeys.SET_LOGIN_EMAIL, SetLoginEmailPayload>;
 export type SetLoginPassword = ActionWithPayload<TypeKeys.SET_LOGIN_PASSWORD, SetLoginPasswordPayload>;
-export type ResetStore = ActionWithPayload<TypeKeys.RESET_STORE, ResetStorePayload>;
+export type ResetStore = Action<TypeKeys.RESET_STORE>;
+
+export interface LoginReturnType {
+  (dispatch: Dispatch<RootState>): Promise<LoginActionReturn | null>;
+}
+
+export interface LogoutReturnType {
+  (dispatch: Dispatch<RootState>): Promise<void>;
+}
+
+export interface FetchTodosReturnType {
+  (dispatch: Dispatch<RootState>): Promise<void>;
+}
+
+export interface FetchTagsReturnType {
+  (dispatch: Dispatch<RootState>): Promise<void>;
+}
+
+export interface SearchTodosReturnType {
+  (dispatch: Dispatch<RootState>): Promise<void>;
+}
 
 export type TodoListActions = 
   | AddTodo

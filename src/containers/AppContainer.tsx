@@ -5,6 +5,8 @@ import { fetchTodos } from '../actions/todoActionCreators';
 import { fetchTags } from '../actions/todoActionCreators';
 import App from '../components/App';
 import RootState from '../domains/RootState';
+import MappedAppProps from '../domains/MappedAppProps';
+// import MappedAppActions from '../domains/MappedAppActions';
 
 function mapStateToProps(state: RootState) {
   return {
@@ -17,6 +19,6 @@ function mapDispachToProps(dispatch: Dispatch<RootState>) {
   return bindActionCreators({ ...actionCreators, fetchTodos, fetchTags }, dispatch);
 }
 
-const AppContainer = connect<any, any>(mapStateToProps, mapDispachToProps)(App);
+const AppContainer = connect<MappedAppProps, any, any, RootState>(mapStateToProps, mapDispachToProps)(App);
 
 export default AppContainer;

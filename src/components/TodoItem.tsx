@@ -1,28 +1,16 @@
 import * as React from 'react';
 import DeleteButton from './buttons/DeleteButton';
 import EditButton from './buttons/EditButton';
-import TodoProps from '../domains/TodoProps';
+import TodoItemProps from '../domains/TodoItemProps';
 
-const Todo = (props: TodoProps) => {
-  let buttonStyle = {
-    margin: '10px 10px 10px 0',
-    padding: '5px 0'
-  };
-
-  let handleEditClick = () => {
-    props.handleEdit(props.title, props.id);
-  };
-
-  let handleDeleteClick = () => {
-    props.handleDelete(props.id);
-  };
+const Todo = (props: TodoItemProps) => {
 
   return (
     <li className="todo">
-      <EditButton buttonStyle={buttonStyle} handleClick={handleEditClick} />
+      <EditButton buttonStyle={props.buttonStyle} handleClick={props.handleEdit} />
       <DeleteButton
-        buttonStyle={buttonStyle}
-        handleClick={handleDeleteClick}
+        buttonStyle={props.buttonStyle}
+        handleClick={props.handleDelete}
       />
       <span> {props.title} </span>
       <ul className="todo-tags-list">

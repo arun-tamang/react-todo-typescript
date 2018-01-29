@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import { Reducer } from 'redux';
 import TodoList from '../domains/TodoList';
 import {
   TodoListActions,
@@ -12,11 +13,11 @@ import {
 } from '../domains/ActionTypes';
 import TypeKeys from '../domains/TypeKeys';
 import SearchValue from '../domains/SearchValue';
-import TodoProps from '../domains/TodoProps';
+import TodoItem from '../domains/TodoItem';
 import TodoToAdd from '../domains/TodoToAdd';
-import { initialTodoList } from '../initialStoreStates';
+import { initialTodoList, defaultState } from '../initialStoreStates';
 
-const editTodo = (state: TodoProps[], action: EditTodo) => {
+const editTodo = (state: TodoItem[], action: EditTodo) => {
   let newState = [...state];
   newState[action.payload.index].title = action.payload.title;
   return newState;
@@ -98,30 +99,30 @@ const resetTodoToAdd = (todoToAdd: TodoToAdd) => {
   return todoToAdd;
 };
 
-const todoList = (state: TodoList = initialTodoList, action: TodoListActions) => {
+const todoList: Reducer<TodoList> = (state: TodoList = initialTodoList, action: TodoListActions) => {
   switch (action.type) {
     case TypeKeys.ADD_TODO:
       return {
         ...state,
-        todoProps: [action.payload.newTodo, ...state.todoProps]
+        todos: [action.payload.newTodo, ...state.todos]
       };
     case TypeKeys.REMOVE_TODO:
       return {
         ...state,
-        todoProps: [
-          ...state.todoProps.slice(0, action.payload.index),
-          ...state.todoProps.slice(action.payload.index + 1)
+        todos: [
+          ...state.todos.slice(0, action.payload.index),
+          ...state.todos.slice(action.payload.index + 1)
         ]
       };
     case TypeKeys.EDIT_TODO:
       return {
         ...state,
-        todoProps: editTodo(state.todoProps, action)
+        todos: editTodo(state.todos, action)
       };
     case TypeKeys.SET_TODO_PROPS:
       return {
         ...state,
-        todoProps: action.payload.todoProps
+        todos: action.payload.todos
       };
     case TypeKeys.SET_TODO_META_DATA:
       return {
@@ -190,7 +191,7 @@ const todoList = (state: TodoList = initialTodoList, action: TodoListActions) =>
       };
     case TypeKeys.RESET_STORE:
       console.log('reset store from todoList reducer');
-      return action.payload.defaultState.todoList;
+      return defaultState.todoList;
     default:
       return state;
   }

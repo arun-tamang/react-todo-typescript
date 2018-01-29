@@ -1,25 +1,12 @@
 import * as React from 'react';
-
-export interface ButtonStyle {
-  margin: string;
-  padding: string;
-}
-
-export interface EditButtonProps {
-  buttonStyle: ButtonStyle;
-  handleClick(): void;
-}
+import EditButtonProps from '../../domains/EditButtonProps';
 
 const EditButton = (props: EditButtonProps) => {
-  let handleClick = () => {
-    props.handleClick();
-  };
-
   return (
     <button
       style={props.buttonStyle}
-      className="btn btn-success"
-      onClick={handleClick}
+      className="slide btn btn-success"
+      onClick={props.handleClick}
     >
       <i className="fa fa-pencil" />
     </button>
