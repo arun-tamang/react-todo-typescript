@@ -5,6 +5,7 @@ import TagItem from './TagItem';
 import FetchedUsrDetails from './FetchedUsrDetails';
 // import RootState from './RootState';
 import Tokens from './Tokens';
+import { Moment } from 'moment';
 
 export interface AddTodoPayload {
   newTodo: TodoItem;
@@ -52,7 +53,7 @@ export interface SetTitleToAddPayload {
 }
 
 export interface SetExpDateToAddPayload {
-  date: string;
+  date: Moment;
 }
 
 export interface SetTagIdsToAddPayload {
@@ -77,6 +78,22 @@ export interface SetLoginEmailPayload {
 }
 
 export interface SetLoginPasswordPayload {
+  password: string;
+}
+
+export interface SetRegisterFNamePayload {
+  fName: string;
+}
+
+export interface SetRegisterLNamePayload {
+  lName: string;
+}
+
+export interface SetRegisterEmailPayload {
+  email: string;
+}
+
+export interface SetRegisterPasswordPayload {
   password: string;
 }
 

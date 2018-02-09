@@ -1,8 +1,6 @@
 import myAxios from '../../myAxios';
-import { AxiosRequestConfig } from 'axios';
+import { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { refreshAcsToken } from '../authServices/refreshAcsToken';
-import { forcedLogout } from '../../actions/appActionCreators';
-import store from '../../store';
 
 export function setTokenInHeader(token: string) {
   // console.log(token);
@@ -11,7 +9,7 @@ export function setTokenInHeader(token: string) {
   };
 }
 
-export const refreshAndRepeat = (lastConfig: AxiosRequestConfig) => {
+export const refreshAndRepeat = (lastConfig: AxiosRequestConfig, logout: () => any) => {
   console.log('inside refresh and repeat');
   return refreshAcsToken()
     .then((response) => {
@@ -22,8 +20,24 @@ export const refreshAndRepeat = (lastConfig: AxiosRequestConfig) => {
     })
     .catch((error) => {
       console.log('caught error in refresh with code', error.response.status);
-      if (error.response.status === 404) {
-        store.dispatch(forcedLogout());
+      if (error.response.status === 403) {
+        logout();
       }
     });
 };
+
+export function addInterceptor(logout: () => any) {
+  // console.log('now activating interceptor');
+  myAxios.interceptors.response.use(
+    (response: AxiosResponse<any>) => {
+      return response;
+    },
+    (error: any) => {
+      if (error.response.status === 401) {
+        console.log('access token has to be refreshed');
+        let lastConfig: AxiosRequestConfig = error.response.config;
+        return refreshAndRepeat(lastConfig, logout);
+      }
+      return Promise.reject(error);
+    });
+}

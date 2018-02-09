@@ -5,10 +5,11 @@ import TodoListContainer from '../containers/TodoListContainer';
 import Home from './HomePage';
 import Login from './forms/Login';
 import NavBar from './navigation/NavBar';
-import { setTokenInHeader } from '../services/appService/axiosServices';
+import { setTokenInHeader, addInterceptor } from '../services/appService/axiosServices';
 import AppProps from '../domains/AppProps';
 import LogInDetails from '../domains/LogInDetails';
 import LoginActionReturn from '../domains/LoginActionReturn';
+import Register from './forms/Register';
 
 const App = (props: AppProps) => {
 
@@ -27,10 +28,35 @@ const App = (props: AppProps) => {
         })
       );
       setTokenInHeader(data.tokens.accessToken);
+      addInterceptor(props.forcedLogout);
     } else {
       console.log('login unsuccessful');
     }
   };
+
+  const handleRegister = () => {
+    props.register(props.registerDetails)
+      .then((response) => {
+        if (response) {
+          let { email } = response.data.data;
+          let { password } = response.data.data;
+          props.setLoginEmail(email);
+          props.setLoginPassword(password);
+          handleLogIn(null, { email, password });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const checkAuthentication = () => {
+    if (props.user.authenticated === true) {
+      addInterceptor(props.forcedLogout);
+    }
+  };
+
+  checkAuthentication();
 
   return (
     <Router>
@@ -50,6 +76,21 @@ const App = (props: AppProps) => {
               }
             )
           }
+        />
+        <Route
+          path="/register"
+          render={routerProps => {
+            return (
+              <Register
+                handleSubmit={handleRegister}
+                isAuthenticated={props.user.authenticated}
+                setRegisterFName={props.setRegisterFName}
+                setRegisterLName={props.setRegisterLName}
+                setRegisterEmail={props.setRegisterEmail}
+                setRegisterPassword={props.setRegisterPassword}
+              />
+            );
+          }}
         />
         <Route
           path="/todo"

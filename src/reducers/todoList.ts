@@ -94,7 +94,7 @@ const resetTodoToAdd = (todoToAdd: TodoToAdd) => {
   todoToAdd.title = '';
   todoToAdd.tagIds = [];
   todoToAdd.tagNames = [];
-  todoToAdd.expiresAt = String(moment());
+  todoToAdd.expiresAt = moment().add(2, 'days');
 
   return todoToAdd;
 };

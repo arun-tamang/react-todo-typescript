@@ -1,7 +1,7 @@
 import * as React from 'react';
 import NavHome from './NavHome';
 import NavTodo from './NavTodo';
-import NavLogIn from './NavLogIn';
+import NavLogInRegister from './NavLogInRegister';
 import NavLogout from './NavLogout';
 import NavBarProps from '../../domains/NavBarProps';
 
@@ -16,7 +16,7 @@ const NavBar = (props: NavBarProps) => {
         <NavTodo />
         {
           (props.authenticated === false) ? (
-            <NavLogIn />
+            <NavLogInRegister />
           ) : (
             <NavLogout handleLogOut={handleLogOut} />
           )

@@ -6,7 +6,6 @@ import TodoList from '../components/TodoList';
 import RootState from '../domains/RootState';
 import TodoListContainerProps from '../domains/TodoListContainerProps';
 import SERVICES from '../services/index';
-import * as moment from 'moment';
 
 class TodoListContainer extends React.Component<TodoListContainerProps, any> {
   constructor(props: TodoListContainerProps) {
@@ -32,8 +31,7 @@ class TodoListContainer extends React.Component<TodoListContainerProps, any> {
   }
 
   handleAdd() {
-    const EXPIRES_AT = String(moment());
-    SERVICES.addTodo(this.props.userId, this.props.todoToAdd.title, this.props.todoToAdd.tagIds, EXPIRES_AT)
+    SERVICES.addTodo(this.props.userId, this.props.todoToAdd)
       .then((response) => {
         if (response) {
           let { id } = response.data;
@@ -46,7 +44,7 @@ class TodoListContainer extends React.Component<TodoListContainerProps, any> {
               id,
               title: this.props.todoToAdd.title,
               tags: this.props.todoToAdd.tagNames,
-              expiresAt: EXPIRES_AT
+              expiresAt: this.props.todoToAdd.expiresAt
             });
           }
           this.props.resetTodoToAdd();

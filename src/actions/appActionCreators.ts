@@ -1,22 +1,29 @@
+import { Dispatch } from 'redux';
+import { AxiosResponse } from 'axios';
+import Tokens from '../domains/Tokens';
 import SERVICES from '../services/index';
-import FetchedUsrDetails from '../domains/FetchedUsrDetails';
-import { getAction, getActionWithPayload } from '../domains/ActionCreators';
 import TypeKeys from '../domains/TypeKeys';
 import RootState from '../domains/RootState';
 import LogInDetails from '../domains/LogInDetails';
-import { Dispatch } from 'redux';
-import Tokens from '../domains/Tokens';
-import { AxiosResponse } from 'axios';
+import RegisterDetails from '../domains/RegisterDetails';
+import FetchedUsrDetails from '../domains/FetchedUsrDetails';
 import LogInResponseData from '../domains/LogInResponseData';
+import { getAction, getActionWithPayload } from '../domains/ActionCreators';
 import {
+  ForcedLogoutReturnType,
   LoginReturnType,
   LogoutReturnType,
   SetAuthentication,
   SetLoginEmail,
   SetLoginPassword,
+  SetRegisterFName,
+  SetRegisterLName,
+  SetRegisterEmail,
+  SetRegisterPassword,
   ReceiveTokensAndUserDetails,
   RemoveTokensAndUserDetails,
-  ResetStore
+  ResetStore,
+  RegisterReturnType
 } from '../domains/ActionTypes';
 
 // login
@@ -37,7 +44,7 @@ export function login(userInfo: LogInDetails): LoginReturnType {
   };
 }
 
-export function forcedLogout() {
+export function forcedLogout(): ForcedLogoutReturnType {
   return (dispatch: Dispatch<RootState>) => {
     dispatch(setAuthentication(false));
     dispatch(removeTokensAndUserDetails());
@@ -75,6 +82,15 @@ export function logout(): LogoutReturnType {
   };
 }
 
+// register
+export function register(newUserDetails: RegisterDetails): RegisterReturnType {
+  return (dispatch: Dispatch<RootState>) => {
+    return SERVICES.register(newUserDetails).then((response) => {
+      return response;
+    });
+  };
+}
+
 export function receiveTokensAndUserDetails(tokens: Tokens, userDetails: FetchedUsrDetails)
   : ReceiveTokensAndUserDetails {
   return getActionWithPayload(TypeKeys.RECEIVE_TOKENS_AND_USERDETAILS, { tokens, userDetails });
@@ -98,4 +114,18 @@ export function setLoginEmail(email: string): SetLoginEmail {
 
 export function setLoginPassword(password: string): SetLoginPassword {
   return getActionWithPayload(TypeKeys.SET_LOGIN_PASSWORD, { password });
+}
+
+export function setRegisterFName(fName: string): SetRegisterFName {
+  return getActionWithPayload(TypeKeys.SET_REGISTER_F_NAME, {fName});
+}
+
+export function setRegisterLName(lName: string): SetRegisterLName {
+  return getActionWithPayload(TypeKeys.SET_REGISTER_L_NAME, {lName});
+}
+export function setRegisterEmail(email: string): SetRegisterEmail {
+  return getActionWithPayload(TypeKeys.SET_REGISTER_EMAIL, {email});
+}
+export function setRegisterPassword(password: string): SetRegisterPassword {
+  return getActionWithPayload(TypeKeys.SET_REGISTER_PASSWORD, {password});
 }

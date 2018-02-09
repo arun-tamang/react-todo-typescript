@@ -7,6 +7,7 @@ import SERVICES from '../services/index';
 import TodoItem from '../domains/TodoItem';
 import TypeKeys from '../domains/TypeKeys';
 import * as ActionTypes from '../domains/ActionTypes';
+import { Moment } from 'moment';
 
 // add todo
 
@@ -199,7 +200,7 @@ export function setTitleToAdd(title: string): ActionTypes.SetTitleToAdd {
 
 // set expDate to add
 
-export function setExpDateToAdd(date: string): ActionTypes.SetExpDateToAdd {
+export function setExpDateToAdd(date: Moment): ActionTypes.SetExpDateToAdd {
   return {
     type: TypeKeys.SET_EXP_DATE_TO_ADD,
     payload: {

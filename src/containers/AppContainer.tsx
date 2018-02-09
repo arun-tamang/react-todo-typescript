@@ -10,8 +10,9 @@ import MappedAppProps from '../domains/MappedAppProps';
 
 function mapStateToProps(state: RootState) {
   return {
-    user: state.user,
     logInDetails: state.logInDetails,
+    registerDetails: state.registerDetails,
+    user: state.user    
   };
 }
 

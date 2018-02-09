@@ -1,5 +1,6 @@
 import LocalUser from './domains/LocalUser';
 import RootState from './domains/RootState';
+import * as moment from 'moment';
 
 // import default data
 let CURRENT_USER: LocalUser = {
@@ -34,7 +35,7 @@ export const initialTodoList = {
     title: '',
     tagIds: [],
     tagNames: [],
-    expiresAt: ''
+    expiresAt: moment().add(2, 'days')
   },
   availableTags: [],
   metadata: {
@@ -50,8 +51,16 @@ export const initialLoginDetails = {
   password: ''
 };
 
+export const initialRegisterDetails = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: ''
+};
+
 export const defaultState: RootState = {
   todoList: initialTodoList,
   user: initialUser,
-  logInDetails: initialLoginDetails
+  logInDetails: initialLoginDetails,
+  registerDetails: initialRegisterDetails
 };

@@ -21,7 +21,11 @@ import {
   ReceiveTokensAndUserDetailsPayload,
   SetAuthenticationPayload,
   SetLoginEmailPayload,
-  SetLoginPasswordPayload
+  SetLoginPasswordPayload,
+  SetRegisterFNamePayload,
+  SetRegisterLNamePayload,
+  SetRegisterEmailPayload,
+  SetRegisterPasswordPayload
 } from './payloads';
 
 export type AddTodo = ActionWithPayload<TypeKeys.ADD_TODO, AddTodoPayload>;
@@ -48,6 +52,10 @@ export type RemoveTokensAndUserDetails = Action<TypeKeys.REMOVE_TOKENS_AND_USERD
 export type SetAuthentication = ActionWithPayload<TypeKeys.SET_AUTHENTICATION, SetAuthenticationPayload>;
 export type SetLoginEmail = ActionWithPayload<TypeKeys.SET_LOGIN_EMAIL, SetLoginEmailPayload>;
 export type SetLoginPassword = ActionWithPayload<TypeKeys.SET_LOGIN_PASSWORD, SetLoginPasswordPayload>;
+export type SetRegisterFName = ActionWithPayload<TypeKeys.SET_REGISTER_F_NAME, SetRegisterFNamePayload>;
+export type SetRegisterLName = ActionWithPayload<TypeKeys.SET_REGISTER_L_NAME, SetRegisterLNamePayload>;
+export type SetRegisterEmail = ActionWithPayload<TypeKeys.SET_REGISTER_EMAIL, SetRegisterEmailPayload>;
+export type SetRegisterPassword = ActionWithPayload<TypeKeys.SET_REGISTER_PASSWORD, SetRegisterPasswordPayload>;
 export type ResetStore = Action<TypeKeys.RESET_STORE>;
 
 export interface LoginReturnType {
@@ -56,6 +64,14 @@ export interface LoginReturnType {
 
 export interface LogoutReturnType {
   (dispatch: Dispatch<RootState>): Promise<void>;
+}
+
+export interface ForcedLogoutReturnType {
+  (dispatch: Dispatch<RootState>): void;
+}
+
+export interface RegisterReturnType {
+  (dispatch: Dispatch<RootState>): Promise<any>;
 }
 
 export interface FetchTodosReturnType {
@@ -98,4 +114,11 @@ export type UserActions =
 export type LoginActions =
   | SetLoginEmail
   | SetLoginPassword
+  | ResetStore;
+
+export type RegisterActions =
+  | SetRegisterFName
+  | SetRegisterLName
+  | SetRegisterEmail
+  | SetRegisterPassword
   | ResetStore;

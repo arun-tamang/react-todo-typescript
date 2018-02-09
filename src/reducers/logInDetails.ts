@@ -1,7 +1,7 @@
 import LogInDetails from '../domains/LogInDetails';
 import { LoginActions } from '../domains/ActionTypes';
 import TypeKeys from '../domains/TypeKeys';
-import { initialLoginDetails, defaultState } from '../initialStoreStates';
+import { initialLoginDetails } from '../initialStoreStates';
 
 const logInDetails = (state: LogInDetails = initialLoginDetails, action: LoginActions) => {
   switch (action.type) {
@@ -10,7 +10,7 @@ const logInDetails = (state: LogInDetails = initialLoginDetails, action: LoginAc
     case TypeKeys.SET_LOGIN_PASSWORD:
       return { ...state, password: action.payload.password };
     case TypeKeys.RESET_STORE:
-      return defaultState.logInDetails;
+      return initialLoginDetails;
     default:
       return state;
   }
